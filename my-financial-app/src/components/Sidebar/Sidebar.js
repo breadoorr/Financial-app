@@ -4,14 +4,14 @@ import './Sidebar.css'; // Ensure you have corresponding CSS for styling
 
 function Sidebar() {
   return (
-    <div className="sidebar">
-      <h3>Menu</h3>
-      <ul className="sidebar-links">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/dashboard">Dashboard</Link></li>
-        <li><Link to="/reports">Reports</Link></li>
-        <li><Link to="/settings">Settings</Link></li>
-      </ul>
+    <div className="bg-light border-right" id="sidebar-wrapper">
+      <div className="sidebar-heading">Menu</div>
+      <div className="list-group list-group-flush">
+        <Link to="/" className="list-group-item list-group-item-action bg-light">Home</Link>
+        <Link to="/dashboard" className="list-group-item list-group-item-action bg-light">Dashboard</Link>
+        <Link to="/reports" className="list-group-item list-group-item-action bg-light">Reports</Link>
+        <Link to="/settings" className="list-group-item list-group-item-action bg-light">Settings</Link>
+      </div>
     </div>
   );
 }
