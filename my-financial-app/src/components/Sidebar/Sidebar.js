@@ -1,16 +1,44 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import './Sidebar.css'; // Ensure you have corresponding CSS for styling
+import { NavLink } from 'react-router-dom';
+import 'bootstrap-icons/font/bootstrap-icons.css'; // If you're using Bootstrap Icons
+import './Sidebar.css';
 
 function Sidebar() {
   return (
-    <div className="bg-light border-right" id="sidebar-wrapper">
-      <div className="sidebar-heading">Menu</div>
-      <div className="list-group list-group-flush">
-        <Link to="/" className="list-group-item list-group-item-action bg-light">Home</Link>
-        <Link to="/dashboard" className="list-group-item list-group-item-action bg-light">Dashboard</Link>
-        <Link to="/reports" className="list-group-item list-group-item-action bg-light">Reports</Link>
-        <Link to="/settings" className="list-group-item list-group-item-action bg-light">Settings</Link>
+    <div className="d-flex flex-column flex-shrink-0 p-3 bg-dark" style={{width: "280px", height: "100vh"}}>
+        <span className="fs-4">Sidebar</span>
+      <hr />
+      <ul className="nav nav-pills flex-column mb-auto">
+        {/* <li className="nav-item">
+          <NavLink to="/" className="nav-link " aria-current="page">
+            <i className="bi bi-house-door-fill"></i> Home
+          </NavLink>
+        </li> */}
+        <li>
+          <NavLink to="/" className="nav-link"aria-current="page">
+            <i className="bi bi-house-door-fill"></i> Dashboard
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/reports" className="nav-link link-light">
+            <i className="bi bi-speedometer2"></i> Reports
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/settings" className="nav-link link-light">
+            <i className="bi bi-speedometer2"></i> Settings
+          </NavLink>
+        </li>
+      </ul>
+      <hr />
+      <div className="dropdown">
+        {/* <a href="#" className="d-flex align-items-center link-light text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="https://github.com/mdo.png" alt="" width="32" height="32" className="rounded-circle me-2" />
+          <strong>mdo</strong>
+        </a>
+        <ul className="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1"> */}
+          {/* Dropdown items */}
+        {/* </ul> */}
       </div>
     </div>
   );
