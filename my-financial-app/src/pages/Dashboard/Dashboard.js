@@ -1,7 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './Dashboard.css';
-import Intro from './pages/Intro/Intro';
+import Intro from '../Intro/Intro';
 
 
 function Dashboard() {

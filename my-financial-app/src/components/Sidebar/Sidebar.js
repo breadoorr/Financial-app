@@ -4,8 +4,9 @@ import 'bootstrap-icons/font/bootstrap-icons.css'; // If you're using Bootstrap 
 import './Sidebar.css';
 
 function Sidebar() {
+    const username = sessionStorage.getItem('user');
   return (
-    <div className="d-flex flex-column flex-shrink-0 p-3 bg-dark" style={{width: "280px", height: "100vh"}}>
+    <div className="d-flex flex-column flex-shrink-0 p-3 bg-dark" style={{width: "280px", height: "98vh"}}>
         <span className="fs-4">Sidebar</span>
       <hr />
       <ul className="nav nav-pills flex-column mb-auto">
@@ -19,16 +20,21 @@ function Sidebar() {
             <i className="bi bi-house-door-fill"></i> Dashboard
           </NavLink>
         </li>
-        <li>
-          <NavLink to="/reports" className="nav-link link-light">
-            <i className="bi bi-speedometer2"></i> Reports
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/settings" className="nav-link link-light">
-            <i className="bi bi-speedometer2"></i> Settings
-          </NavLink>
-        </li>
+        {username && (
+          <>
+            <li>
+              <NavLink to="/reports" className="nav-link text-white">
+                <i className="bi bi-bar-chart-line-fill"></i> Reports
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/settings" className="nav-link text-white">
+                <i className="bi bi-gear-fill"></i> Settings
+              </NavLink>
+            </li>
+          </>
+        )}
+        
       </ul>
       <hr />
       <div className="dropdown">
