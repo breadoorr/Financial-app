@@ -3,8 +3,8 @@ import './Dashboard.css';
 import Intro from '../Intro/Intro';
 
 
-function Dashboard() {
-  const username = sessionStorage.getItem('user');
+const Dashboard = ( { username } ) => {
+  // const username = sessionStorage.getItem('user');
   return (
       <>
       {username ?

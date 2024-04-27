@@ -12,9 +12,10 @@
     color: white;
 }
 
-.Intro form {
-    width: 40%;
-}
+/*.Intro form {*/
+/*    width: 40%;*/
+/*    align-self: center;*/
+/*}*/
 
 @media (max-width: 800px) {
     .Intro {

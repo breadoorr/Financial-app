@@ -1,24 +1,39 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const Login = () => {
+    const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
-
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+    setFormData(prev => ({...prev, [event.target.name]: event.target.value}))
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handle the form submission to log in the user
-    console.log(formData);
+    // console.log(formData);
+
+    axios.post('http://localhost:8081/login', formData)
+        .then(res => {
+            if(res.data === "Failure") {
+                alert("Account was not found");
+            }
+            else {
+                sessionStorage.setItem('user', res.data[0].user_name);
+                alert('You have successfully logged in');
+                navigate('/');
+                // window.location.reload();
+            }
+          // console.log(res);
+
+        })
+        .catch(err => console.log(err));
     // Here you would typically send a request to your backend to authenticate the user
   };
 

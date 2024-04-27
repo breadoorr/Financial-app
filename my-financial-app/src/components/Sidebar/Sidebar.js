@@ -3,8 +3,8 @@ import { NavLink } from 'react-router-dom';
 import 'bootstrap-icons/font/bootstrap-icons.css'; // If you're using Bootstrap Icons
 import './Sidebar.css';
 
-function Sidebar() {
-    const username = sessionStorage.getItem('user');
+const Sidebar = ( {username} ) => {
+    // const username = sessionStorage.getItem('user');
   return (
     <div className="d-flex flex-column flex-shrink-0 p-3 bg-dark" style={{width: "280px", height: "98vh"}}>
         <span className="fs-4">Sidebar</span>
