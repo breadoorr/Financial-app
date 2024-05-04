@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import Logout from "./Logout"; // Import the useAuth hook
-// import Login from './pages/Login/Login';
+
 
 const Header = ( {username} ) => {
   // const username = sessionStorage.getItem('user');
@@ -9,6 +8,7 @@ const Header = ( {username} ) => {
     const handleLogout = () => {
         sessionStorage.removeItem('user'); // Clear user session storage
         navigate('/', { replace: true }); // Navigate to home page without pushing to history stack
+        window.location.reload();
     };
 
   return (

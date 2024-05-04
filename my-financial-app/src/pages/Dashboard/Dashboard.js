@@ -1,6 +1,7 @@
 import React from 'react';
 import './Dashboard.css';
 import Intro from '../Intro/Intro';
+import {BudgetForm, Budgets} from "../../components/Budgets/Budgets";
 
 
 const Dashboard = ( { username } ) => {
@@ -9,7 +10,10 @@ const Dashboard = ( { username } ) => {
       <>
       {username ?
         (<div className="Dashboard">
-        <h2>Dashboard</h2><p>Welcome, {username}</p></div>)
+        <h2>Budgets</h2>
+            <BudgetForm />
+            <Budgets />
+        </div>)
         :
         <Intro />}
       </>

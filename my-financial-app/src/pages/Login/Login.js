@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import Intro from "../Intro/Intro";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
+import '../Intro/Intro.css'
 
 const Login = () => {
     const navigate = useNavigate();
@@ -28,7 +32,7 @@ const Login = () => {
                 sessionStorage.setItem('user', res.data[0].user_name);
                 alert('You have successfully logged in');
                 navigate('/');
-                // window.location.reload();
+                window.location.reload();
             }
           // console.log(res);
 
@@ -38,37 +42,44 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container d-flex h-100 p-3 mx-auto flex-column">
-      <div className="inner login text-center">
-        <h1 className="cover-heading">Welcome Back!</h1>
-        <p className="lead">Log in to your account to continue.</p>
-        <form className="form-login" onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Email address"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
+      <div>
+          <Header/>
+          <div >
+              <div className="inner login text-center" >
+                <h1 className="cover-heading">Welcome Back!</h1>
+                <p className="lead">Log in to your account to continue.</p>
+                <form className="form-login" onSubmit={handleSubmit} style={{maxWidth: '400px', margin: 'auto'}}>
+                  <div className="mb-3">
+                    <input
+                      type="email"
+                      className="form-control"
+                      placeholder="Email address"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <input
+                      type="password"
+                      className="form-control"
+                      placeholder="Password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                    <div>
+                        <Link to={'/'} >Don't have an account?</Link>
+                    </div>
+                  <button className="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
+                </form>
+              </div>
           </div>
-          <div className="mb-3">
-            <input
-              type="password"
-              className="form-control"
-              placeholder="Password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <button className="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
-        </form>
+          <Footer />
       </div>
-    </div>
   );
 };
 
