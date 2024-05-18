@@ -1,0 +1,57 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* App.css */
+
+/* ... other styles ... */
+
+/* Layout styles for sidebar and content area */
+.App .d-flex {
+  height: calc(100vh - headerHeight); /* Adjust the headerHeight to your header's actual height */
+  overflow-x: hidden;
+  display: sticky;
+}
+
+/* Make sure the content area can scroll if needed */
+.content {
+  overflow-y: auto;
+  padding: 1rem; /* Adjust padding as necessary */
+}
+
+/* You might need to add media queries if you have different layout requirements on different screen sizes */
