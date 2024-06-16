@@ -42,10 +42,10 @@ const Login = () => {
   };
 
   return (
-      <div>
+      <div className='intro-overlay'>
           <Header/>
-          <div >
-              <div className="inner login text-center" >
+          <div className='h-100 d-flex'>
+              <div className="inner login text-center intro-content" >
                 <h1 className="cover-heading">Welcome Back!</h1>
                 <p className="lead">Log in to your account to continue.</p>
                 <form className="form-login" onSubmit={handleSubmit} style={{maxWidth: '400px', margin: 'auto'}}>
