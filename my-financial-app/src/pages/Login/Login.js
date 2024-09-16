@@ -1,86 +1,101 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from "axios";
-import {Link, useNavigate} from "react-router-dom";
-import Intro from "../Intro/Intro";
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
-import '../Intro/Intro.css'
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import Intro from '../Intro/Intro';
+import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
+import '../Intro/Intro.css';
 
 const Login = () => {
     const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
 
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
-  const handleChange = (event) => {
-    setFormData(prev => ({...prev, [event.target.name]: event.target.value}))
-  };
+    const handleChange = (event) => {
+        setFormData((prev) => ({ ...prev, [event.target.name]: event.target.value }));
+    };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Handle the form submission to log in the user
-    // console.log(formData);
+    const emailError = document.querySelector('.email.error');
+    const passwordError = document.querySelector('.password.error');
 
-    axios.post('http://localhost:8081/login', formData)
-        .then(res => {
-            if(res.data === "Failure") {
-                alert("Account was not found");
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        emailError.textContent = '';
+        passwordError.textContent = '';
+
+        const { email, password} = formData;
+
+        try {
+            const res = await fetch('http://localhost:8000/get-user', {
+                    method: 'POST',
+                    credentials:"include",
+                    body: JSON.stringify({email, password}),
+                    headers: {'Content-Type': 'application/json'}
+                }
+            );
+            const data = await res.json();
+            console.log(data);
+            if(data.errors) {
+                emailError.textContent = data.errors.email;
+                passwordError.textContent = data.errors.password;
             }
-            else {
-                sessionStorage.setItem('user', res.data[0].user_name);
-                alert('You have successfully logged in');
-                navigate('/');
-                window.location.reload();
+            if(data.user) {
+                window.location.assign('/');
             }
-          // console.log(res);
+            // alert("User has been created successfully")
+        } catch(err) {
+            console.log(err);
+        }
+    };
 
-        })
-        .catch(err => console.log(err));
-    // Here you would typically send a request to your backend to authenticate the user
-  };
-
-  return (
-      <div className='intro-overlay'>
-          <Header/>
-          <div className='h-100 d-flex'>
-              <div className="inner login text-center intro-content" >
-                <h1 className="cover-heading">Welcome Back!</h1>
-                <p className="lead">Log in to your account to continue.</p>
-                <form className="form-login" onSubmit={handleSubmit} style={{maxWidth: '400px', margin: 'auto'}}>
-                  <div className="mb-3">
-                    <input
-                      type="email"
-                      className="form-control"
-                      placeholder="Email address"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <input
-                      type="password"
-                      className="form-control"
-                      placeholder="Password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                    <div>
-                        <Link to={'/'} >Don't have an account?</Link>
-                    </div>
-                  <button className="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
-                </form>
-              </div>
-          </div>
-          <Footer />
-      </div>
-  );
+    return (
+        <div className={'intro-overlay'}>
+            <Header />
+            <div className={'intro-content'}>
+                <div className="d-flex flex-column justify-content-center align-items-center text-center" style={{ height: '100vh' }}>
+                    <h1 className="cover-heading">Welcome Back!</h1>
+                    <p className="lead">Log in to your account to continue.</p>
+                    <form className="form-login" onSubmit={handleSubmit} style={{ width: '80%', maxWidth: '400px' }}>
+                        <div className="mb-3">
+                            <input
+                                type="email"
+                                className="form-control"
+                                placeholder="Email address"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                            />
+                            <div className='email error'></div>
+                        </div>
+                        <div className="mb-3">
+                            <input
+                                type="password"
+                                className="form-control"
+                                placeholder="Password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                            />
+                            <div className='password error'></div>
+                        </div>
+                        <div className={'mb-3'}>
+                            <Link to={'/signup'}>Don't have an account?</Link>
+                        </div>
+                        <button className="btn btn-lg btn-primary btn-block" type="submit">
+                            Log In
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <Footer />
+        </div>
+    );
 };
 
 export default Login;

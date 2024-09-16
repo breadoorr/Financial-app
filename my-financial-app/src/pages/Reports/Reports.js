@@ -1,70 +1,58 @@
-import React from 'react';
-
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    ArcElement,
-    Tooltip,
-    Legend
-} from 'chart.js';
-
+import React, { useEffect, useState } from 'react';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut, Line } from 'react-chartjs-2';
 
-
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    ArcElement,
-    Tooltip,
-    Legend
-);
-
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Tooltip, Legend);
 
 const Reports = () => {
+    const [expenseData, setExpenseData] = useState({ labels: [], datasets: [] });
+    const [incomeData, setIncomeData] = useState({ labels: [], datasets: [] });
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const expenseResponse = await fetch('http://localhost:8000/get-expenses', { method: 'GET', credentials: "include" });
+                const expenseResults = await expenseResponse.json();
+                updateExpenseChart(expenseResults);
 
-    // Sample data for the charts
-    const expenseData = {
-        labels: ['Rent', 'Food', 'Utilities', 'Entertainment', 'Transport'],
-        datasets: [
-            {
-                label: 'Expenses',
-                data: [500, 300, 100, 150, 100],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)'
-                ],
-                borderWidth: 1
+                const incomeResponse = await fetch('http://localhost:8000/get-incomes', { method: 'GET', credentials: "include" });
+                const incomeResults = await incomeResponse.json();
+                updateIncomeChart(incomeResults);
+            } catch (error) {
+                console.error('Error fetching data:', error);
             }
-        ]
+        };
+        fetchData();
+    }, []);
+
+    const updateExpenseChart = (expenses) => {
+        const categories = expenses.map(item => item.category);
+        const amounts = expenses.map(item => item.amount);
+        setExpenseData({
+            labels: categories,
+            datasets: [{
+                label: 'Expenses',
+                data: amounts,
+                backgroundColor: categories.map(() => `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.2)`),
+                borderColor: categories.map(() => `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`),
+                borderWidth: 1
+            }]
+        });
     };
 
-    const incomeData = {
-        labels: ["January", "February", "March", "April", "May"],
-        datasets: [
-            {
+    const updateIncomeChart = (incomes) => {
+        const months = incomes.map(item => new Date(item.date).toLocaleString('default', { month: 'long' })); // Convert date to month name
+        const amounts = incomes.map(item => item.amount);
+        setIncomeData({
+            labels: months,
+            datasets: [{
                 label: 'Income',
-                data: [1000, 1200, 1400, 1300, 1500],
+                data: amounts,
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.1
-            }
-        ]
+            }]
+        });
     };
 
     return (

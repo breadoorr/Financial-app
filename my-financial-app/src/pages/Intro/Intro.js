@@ -8,7 +8,7 @@ import Header from "../../components/Header/Header";
 
 const Intro = () => {
     const [formData, setFormData] = useState({
-        name: '',
+        username: '',
         email: '',
         password: '',
     });
@@ -18,19 +18,41 @@ const Intro = () => {
         setFormData((prev) => ({ ...prev, [event.target.name]: event.target.value }));
     };
 
-    const handleSubmit = (event) => {
+    const emailError = document.querySelector('.email.error');
+    const passwordError = document.querySelector('.password.error');
+
+
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        axios
-            .post('http://localhost:8081', formData)
-            .then((res) => {
-                navigate('/');
-                sessionStorage.setItem('user', formData.name);
-                alert('Your account has been successfully created');
-                window.location.reload();
-            })
-            .catch((err) => {
-                alert('User already exists');
-            });
+        const {username, email, password} = formData;
+
+        try {
+            const res = await fetch('http://localhost:8000/add-user', {
+                    method: 'POST',
+                    body: JSON.stringify({username, email, password}),
+                    headers: {'Content-Type': 'application/json'}
+                }
+            );
+
+            emailError.textContent = '';
+            passwordError.textContent = '';
+
+            const data = await res.json();
+            console.log(data);
+            if(data.errors) {
+                emailError.textContent = data.errors.email;
+                passwordError.textContent = data.errors.password;
+            }
+            if(data.user) {
+                window.location.assign('/');
+            }
+            // alert("User has been created successfully")
+        } catch(err) {
+            console.log(err);
+        }
+
+
     };
 
     return (
@@ -43,7 +65,7 @@ const Intro = () => {
                             <h1 style={{fontSize: '6vh'}}>Welcome to My Financial App</h1>
                         </div>
                         <div className="col-md-8">
-                        <p className="lead">Your personal finance assistant.</p>
+                            <p className="lead">Your personal finance assistant.</p>
                         </div>
                     </div>
                     <div className={'row'}>
@@ -67,18 +89,20 @@ const Intro = () => {
                                 today.</p>
                             <form className="form-signup" onSubmit={handleSubmit}>
                                 <div className="mb-3">
-                                    <input type="text" className="form-control" name="name" placeholder="Full Name"
-                                           value={formData.name} onChange={handleChange} required autoFocus/>
+                                    <input type="text" className="form-control" name="username" placeholder="Username"
+                                           value={formData.username} onChange={handleChange} required autoFocus/>
                                 </div>
                                 <div className="mb-3">
                                     <input type="email" className="form-control" name="email"
                                            placeholder="Email address"
                                            value={formData.email} onChange={handleChange} required/>
+                                    <div className='email error'></div>
                                 </div>
                                 <div className="mb-3">
                                     <input type="password" className="form-control" name="password"
                                            placeholder="Password"
                                            value={formData.password} onChange={handleChange} required/>
+                                    <div className='password error'></div>
                                 </div>
                                 <button className="btn btn-lg btn-primary btn-block" type="submit">Create Account
                                 </button>

@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const ExpenseSchema = new mongoose.Schema({
+    user_id: {
+        type: String,
+        require: true,
+    },
     title: {
         type: String,
         require: true,
@@ -32,5 +36,17 @@ const ExpenseSchema = new mongoose.Schema({
     },
 
 }, {timestamps: true})
+
+ExpenseSchema.statics.get = async function( id ) {
+    const expense = this.find({ user_id: id });
+    if(expense) {
+        return expense;
+    }
+    else {
+        throw Error("No expenses");
+    }
+}
+
+const Expense = mongoose.model('Expense', ExpenseSchema);
 
 module.exports = mongoose.model('Expense', ExpenseSchema);

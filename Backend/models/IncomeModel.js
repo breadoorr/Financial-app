@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const IncomeSchema = new mongoose.Schema({
+    user_id: {
+        type: String,
+        require: true,
+    },
     title: {
         type: String,
         require: true,
@@ -29,8 +33,20 @@ const IncomeSchema = new mongoose.Schema({
         required: true,
         maxLength: 100,
         trim: true,
-    },
+    }
 
 }, {timestamps: true})
+
+IncomeSchema.statics.get = async function( id ) {
+    const income = this.find({ user_id: id });
+    if(income) {
+        return income;
+    }
+    else {
+        throw Error("No incomes");
+    }
+}
+
+const Income = mongoose.model('Income', IncomeSchema);
 
 module.exports = mongoose.model('Income', IncomeSchema);
